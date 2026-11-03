@@ -442,12 +442,3 @@ A recent handshake and increasing transfer counters show that traffic is passing
 - Add centralized logging and traffic monitoring.
 - Connect additional remote sites.
 
-## 👨‍💻 Author
-
-Cybersecurity / Network Security Lab Project
-
-Built using Kali Linux, Docker and WireGuard.
-
-⭐ If you find this project useful, consider giving this repository a star!
-
-`#CyberSecurity` `#WireGuard` `#Docker` `#VPN` `#ZeroTrust` `#NetworkSecurity` `#KaliLinux`
