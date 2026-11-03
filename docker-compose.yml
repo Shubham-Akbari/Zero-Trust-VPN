@@ -1,0 +1,83 @@
+networks:
+  site_a_net:
+    ipam:
+      config:
+        - subnet: 172.28.1.0/24
+  site_b_net:
+    ipam:
+      config:
+        - subnet: 172.28.2.0/24
+  transit_net:
+    ipam:
+      config:
+        - subnet: 172.28.3.0/24
+
+services:
+  vpn_gateway_a:
+    image: linuxserver/wireguard
+    container_name: vpn-gateway-a
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - SERVERURL=172.28.3.254
+      - SERVERPORT=51820
+      - PEERS=1
+      - PEERDNS=auto
+    volumes:
+      - ./wg_config_a:/config
+      - /lib/modules:/lib/modules:ro
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    networks:
+      site_a_net:
+        ipv4_address: 172.28.1.254
+      transit_net:
+        ipv4_address: 172.28.3.254
+    restart: unless-stopped
+
+  client_a:
+    image: alpine
+    container_name: client-a
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+    networks:
+      site_a_net:
+        ipv4_address: 172.28.1.10
+
+  vpn_peer_b:
+    image: linuxserver/wireguard
+    container_name: vpn-peer-b
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - ./wg_config_b:/config
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    networks:
+      site_b_net:
+        ipv4_address: 172.28.2.254
+      transit_net:
+        ipv4_address: 172.28.3.253
+    restart: unless-stopped
+
+  client_b:
+    image: alpine
+    container_name: client-b
+    command: sleep infinity
+    cap_add:
+      - NET_ADMIN
+    networks:
+      site_b_net:
+        ipv4_address: 172.28.2.10
