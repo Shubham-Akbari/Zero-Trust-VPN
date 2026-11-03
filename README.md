@@ -11,6 +11,9 @@
 
 This proof of concept (PoC) builds a **Site-to-Site VPN** with **WireGuard** and **Docker**.
 
+## Stack
+Docker Compose, WireGuard (linuxserver/wireguard), iptables, tcpdump, Kali Linux
+
 Two isolated private networks (**Site A** and **Site B**) are joined by an encrypted WireGuard tunnel between two gateway containers. Devices in both networks can talk to each other without exposing their internal services directly to the internet. A **default-deny firewall** on each gateway applies the Zero Trust idea: nothing is forwarded unless a rule explicitly allows it.
 
 ## 🎯 Project Objectives
