@@ -3,8 +3,6 @@
 Two isolated Docker sites (`site_a_net`, `site_b_net`) joined only by an encrypted WireGuard tunnel.
 The gateway enforces stateful iptables rules and drops cleartext Telnet through the tunnel.
 
-![Topology](images/01-topology.png)
-
 ## Stack
 Docker Compose, WireGuard (linuxserver/wireguard), iptables, tcpdump, Kali Linux
 
